@@ -1,3 +1,4 @@
+// src/services/contacts.js
 
 import Contact from '../models/contact.js';
 
@@ -31,7 +32,7 @@ export const createContact = async (data) => {
   return {
     status: 201,
     message: 'Successfully created a contact!',
-    data: savedContact,
+    data: savedContact.toObject(), // ✅ тепер без __v
   };
 };
 
@@ -46,7 +47,7 @@ export const updateContact = async (contactId, updateData) => {
   return {
     status: 200,
     message: 'Successfully patched a contact!',
-    data: updated,
+    data: updated.toObject(), // ✅ також при оновленні
   };
 };
 
