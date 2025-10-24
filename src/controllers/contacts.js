@@ -1,6 +1,4 @@
-
 import createError from 'http-errors';
-
 import {
   getAllContacts,
   getContactById,
@@ -10,7 +8,7 @@ import {
 } from '../services/contacts.js';
 
 export const getAllContactsCtrl = async (req, res) => {
-  const response = await getAllContacts();
+  const response = await getAllContacts(req.query);
   res.status(response.status).json(response);
 };
 
