@@ -13,10 +13,12 @@ export const authenticate = async (req, res, next) => {
     if (type !== "Bearer" || !token) throw createHttpError(401, "No token provided");
 
     const decoded = jwt.verify(token, JWT_SECRET);
+
     const session = await Session.findOne({ accessToken: token });
     if (!session) throw createHttpError(401, "Session not found");
 
     if (new Date() > session.accessTokenValidUntil) {
+      await Session.deleteOne({ _id: session._id });
       throw createHttpError(401, "Access token expired");
     }
 
@@ -26,6 +28,9 @@ export const authenticate = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return next(createHttpError(401, "Access token expired"));
+    }
     next(err);
   }
 };

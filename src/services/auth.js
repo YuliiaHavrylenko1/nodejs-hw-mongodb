@@ -72,5 +72,8 @@ export const refresh = async (oldRefreshToken) => {
 };
 
 export const logout = async (refreshToken) => {
-  await Session.deleteOne({ refreshToken });
+  if (!refreshToken) throw createHttpError(401, "No refresh token provided");
+  const session = await Session.findOne({ refreshToken });
+  if (!session) throw createHttpError(401, "Session not found");
+  await Session.deleteOne({ _id: session._id });
 };
