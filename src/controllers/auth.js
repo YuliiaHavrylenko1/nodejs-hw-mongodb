@@ -1,5 +1,4 @@
 import * as authService from "../services/auth.js";
-// import createHttpError from "http-errors";
 
 export const registerUser = async (req, res, next) => {
   try {
@@ -46,7 +45,7 @@ export const logoutUser = async (req, res, next) => {
   try {
     await authService.logout(req.cookies.refreshToken);
     res.clearCookie("refreshToken");
-    res.status(204).end();
+    res.status(204).end(); 
   } catch (err) {
     next(err);
   }
